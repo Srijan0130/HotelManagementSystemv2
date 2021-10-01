@@ -154,19 +154,19 @@ class Cust_Win:
             "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
         btnAdd.grid(row=0, column=0, padx=1)
 
-        btnUpdate = Button(btn_frame, text="UPDATE", font=(
+        btnUpdate = Button(btn_frame, text="UPDATE", command=self.update, font=(
             "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
         btnUpdate.grid(row=0, column=1, padx=1)
 
-        btnDelete = Button(btn_frame, text="DELETE", font=(
+        btnDelete = Button(btn_frame, text="DELETE", command=self.delete, font=(
             "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
         btnDelete.grid(row=0, column=2, padx=1)
 
-        btnReset = Button(btn_frame, text="RESET", font=(
+        btnReset = Button(btn_frame, text="RESET", command=self.reset, font=(
             "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
         btnReset.grid(row=0, column=3, padx=1)
 
-        # table frame
+        # table frame search system
 
         Table_Frame = LabelFrame(self.root, bd=2, relief=RIDGE, text="View Details And Search System", font=(
             "times new roman", 12, "bold"), padx=2)
@@ -176,21 +176,23 @@ class Cust_Win:
             "times new roman", 12, "bold"), text="Search By:", bg="red", fg="white")
         lblSearchBy.grid(row=0, column=0, sticky=W)
 
-        combo_gender = ttk.Combobox(Table_Frame, font=(
+        self.search_var = StringVar()
+        combo_gender = ttk.Combobox(Table_Frame, textvariable=self.search_var, font=(
             "times new roman", 13, "bold"), width=24, state="read only")
         combo_gender["value"] = ("Mobile", "Ref")
         combo_gender.current(0)
         combo_gender.grid(row=0, column=1)
 
-        txtSearch = ttk.Entry(Table_Frame, font=(
+        self.txt_search() = StringVar()
+        txtSearch = ttk.Entry(Table_Frame, textvariable=self.txt_search, font=(
             "times new roman", 13, "bold"), width=29)
         txtSearch.grid(row=0, column=2, padx=2)
 
-        btnSearch = Button(Table_Frame, text="Search", font=(
+        btnSearch = Button(Table_Frame, text="Search", command=self.search, font=(
             "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
         btnSearch.grid(row=0, column=3, padx=1)
 
-        btnShowAll = Button(Table_Frame, text="Show All", font=(
+        btnShowAll = Button(Table_Frame, text="Show All", command=self.fetch_details, font=(
             "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
         btnShowAll.grid(row=0, column=4, padx=1)
 
@@ -300,6 +302,82 @@ class Cust_Win:
         self.var_id_proof.set(row=[8]),
         self.var_id_number.set(row=[9]),
         self.var_address.set(row=[10])
+
+    def update(self):
+        if self.var_mobile.get() == "":
+            messagebox.showerror(
+                "Error", "Please enter mobile number", parent=self.root)
+        else:
+            conn = mysql.connector.connect(
+                host="local", username="root", password="", database="")
+            my_cursor = conn.cursor()
+            my_cursor.execute("update customer set Name=%s, Mother=%s, Gender=%s,PostCode=%s,Mobile=%s,Email=%s,Nationality=%s,Idproof=%s,=%s,Idnumber=%s,Address=%s where Ref=%s ", (
+
+                self.var_cust_name.get(),
+                self.var_mother.get(),
+                self.var_gender.get(),
+                self.var_post.get(),
+                self.var_mobile.get(),
+                self.var_email.get(),
+                self.var_nationality.get(),
+                self.var_id_proof.get(),
+                self.var_id_number.get(),
+                self.var_address.get(),
+                self.var_ref.get()
+            ))
+            conn.commit()
+            self.fetch_details()
+            conn.close()
+            messagebox.showinfo(
+                "Update", "Customer details has been updated success", parent=self.root)
+
+    def delete(self):
+        delete = messagebox.askyesno(
+            "Hotel Management System", "do you want to deletebthis customer", parent=self.root)
+        if delete > 0:
+            conn = mysql.connector.connect(
+                host="local", username="root", password="", database="")
+            my_cursor = conn.cursor()
+            query = "delete from customer where Ref=%s"
+            value = (self.var_ref.get(),)
+            my_cursor.execute(query, value)
+        else:
+            if not delete:
+                return
+        conn.commit()
+        self.fetch_details()
+        conn.close()
+
+    def reset(self):
+        # self.var_ref.set(""),
+        self.var_cust_name.set(""),
+        self.var_mother.set(""),
+        # self.var_gender.set(""),
+        self.var_post.set(""),
+        self.var_mobile.set(""),
+        self.var_email.set(""),
+        # self.var_nationality.set(""),
+        # self.var_id_proof.set(""),
+        self.var_id_number.set(""),
+        self.var_address.set("")
+
+        x = random.randint(1000, 9999)
+        self.var_ref.set(str(x))
+
+    def search(self):
+        conn = mysql.connector.connect(
+            host="local", username="root", password="", database="")
+        my_cursor = conn.cursor()
+        my_cursor.execute("select * from customer where " +
+                          str(self.search_var.get()) + "LIKE'%"+str(self.txt_search.get()+"%'"))
+        rows = my_cursor.fetchall()
+        if len(rows) != 0:
+            self.Cust_Details_Table.delete(
+                *self.Cust_Details_Table.get_children())
+            for i in rows:
+                self.Cust_Details_Table.insert("", END, values=i)
+            conn.commit()
+        conn.close()
 
 
 if __name__ == "__main__":
