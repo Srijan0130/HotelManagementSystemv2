@@ -183,7 +183,7 @@ class Cust_Win:
         combo_gender.current(0)
         combo_gender.grid(row=0, column=1)
 
-        self.txt_search() = StringVar()
+        self.txt_search = StringVar()
         txtSearch = ttk.Entry(Table_Frame, textvariable=self.txt_search, font=(
             "times new roman", 13, "bold"), width=29)
         txtSearch.grid(row=0, column=2, padx=2)
