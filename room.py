@@ -12,6 +12,18 @@ class Roombooking:
         self.root.title("Hotel Management System")
         self.root.geometry("1295x550+230+220")
 
+        # variables
+        self.var_contact = StringVar()
+        self.var_checkin = StringVar()
+        self.var_checkout = StringVar()
+        self.var_roomtype = StringVar()
+        self.var_roomavailable = StringVar()
+        self.var_meal = StringVar()
+        self.var_noofday = StringVar()
+        self.var_paidtax = StringVar()
+        self.var_actualtotal = StringVar()
+        self.var_total = StringVar()
+
         # title
         lbl_title = Label(self.root, text="ROOMOOKING DETAILS", font=("times new roman", 18, "bold"), bg="black",
                           fg="gold", bd=4, relief=RIDGE)
@@ -36,12 +48,12 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_cust_contact.grid(row=0, column=0, sticky=W)
 
-        enty_contact = ttk.Entry(labelframeleft, font=(
+        enty_contact = ttk.Entry(labelframeleft, textvariable=self.var_contact, font=(
             "times new roman", 13, "bold"), width=20)
         enty_contact.grid(row=0, column=1, sticky=W)
 
         # Fetch data button
-        btnFetchData = Button(labelframeleft, text="Fetch Data", font=(
+        btnFetchData = Button(labelframeleft, text="Fetch Data", command=self.fetch_contact, font=(
             "times new roman", 8, "bold"), bg="black", fg="gold", width=8)
         btnFetchData.place(x=347, y=4)
 
@@ -50,7 +62,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         check_in_date.grid(row=1, column=0, sticky=W)
 
-        txtcheck_in_date = ttk.Entry(labelframeleft, font=(
+        txtcheck_in_date = ttk.Entry(labelframeleft, textvariable=self.var_checkin, font=(
             "times new roman", 13, "bold"), width=29)
         txtcheck_in_date.grid(row=1, column=1)
 
@@ -59,7 +71,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_Check_out.grid(row=2, column=0, sticky=W)
 
-        txt_Check_out = ttk.Entry(labelframeleft, font=(
+        txt_Check_out = ttk.Entry(labelframeleft, textvariable=self.var_checkout, font=(
             "times new roman", 13, "bold"), width=29)
         txt_Check_out.grid(row=2, column=1)
 
@@ -68,7 +80,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_RoomType.grid(row=3, column=0, sticky=W)
 
-        combo_RoomType = ttk.Combobox(labelframeleft, font=(
+        combo_RoomType = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
         combo_RoomType["value"] = (
             "Single", "Double", "Luxury", "Sweet", "Deluxe")
@@ -80,7 +92,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblRoomAvailable.grid(row=4, column=0, sticky=W)
 
-        txtRoomAvailable = ttk.Entry(labelframeleft, font=(
+        txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
             "times new roman", 13, "bold"), width=29)
         txtRoomAvailable.grid(row=4, column=1)
 
@@ -89,7 +101,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblMeal.grid(row=5, column=0, sticky=W)
 
-        txtMeal = ttk.Entry(labelframeleft, font=(
+        txtMeal = ttk.Entry(labelframeleft, textvariable=self.var_meal, font=(
             "times new roman", 13, "bold"), width=29)
         txtMeal.grid(row=5, column=1)
 
@@ -98,7 +110,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblNoOfDays.grid(row=6, column=0, sticky=W)
 
-        txtNoOfDays = ttk.Entry(labelframeleft, font=(
+        txtNoOfDays = ttk.Entry(labelframeleft, textvariable=self.var_noofday, font=(
             "times new roman", 13, "bold"), width=29)
         txtNoOfDays.grid(row=6, column=1)
 
@@ -107,7 +119,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblPT.grid(row=7, column=0, sticky=W)
 
-        txtPT = ttk.Entry(labelframeleft, font=(
+        txtPT = ttk.Entry(labelframeleft, textvariable=self.var_paidtax, font=(
             "times new roman", 13, "bold"), width=29)
         txtPT.grid(row=7, column=1)
 
@@ -116,7 +128,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblST.grid(row=8, column=0, sticky=W)
 
-        txtST = ttk.Entry(labelframeleft, font=(
+        txtST = ttk.Entry(labelframeleft, textvariable=self.var_actualtotal, font=(
             "times new roman", 13, "bold"), width=29)
         txtST.grid(row=8, column=1)
 
@@ -125,7 +137,7 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblTC.grid(row=9, column=0, sticky=W)
 
-        txtTC = ttk.Entry(labelframeleft, font=(
+        txtTC = ttk.Entry(labelframeleft, textvariable=self.var_total, font=(
             "times new roman", 13, "bold"), width=29)
         txtTC.grid(row=9, column=1)
 
@@ -192,47 +204,138 @@ class Roombooking:
             "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
         btnShowAll.grid(row=0, column=4, padx=1)
 
+        # show data table
         details_table = Frame(Table_Frame, bd=2, relief=RIDGE)
-        details_table.place(x=0, y=50, width=860, height=350)
+        details_table.place(x=0, y=50, width=860, height=180)
 
         scroll_x = ttk.Scrollbar(details_table, orient=HORIZONTAL)
         scroll_y = ttk.Scrollbar(details_table, orient=VERTICAL)
 
-        self.Cust_Details_Table = ttk. Treeview(details_table, column=(
-            "ref", "name", "mother", "gender", "post", "mobile", "email", "nationality", "idproof", "idnumber", "address"), xscrollcommand=scroll_x.set)
+        self.room_Table = ttk. Treeview(details_table, column=(
+            "contact", "checkin", "checkout", "roomtype", "roomavailable", "meal", "noOfdays", "show"), xscrollcommand=scroll_x.set)
         scroll_x.pack(side=BOTTOM, fill=X)
-        scroll_x.pack(side=BOTTOM, fill=X)
+        scroll_y.pack(side=RIGHT, fill=Y)
 
-        scroll_x.config(command=self.Cust_Details_Table.xview)
-        scroll_y.config(command=self.Cust_Details_Table.yview)
+        scroll_x.config(command=self.room_Table.xview)
+        scroll_y.config(command=self.room_Table.yview)
 
-        self.Cust_Details_Table.heading("ref", text="Refer No")
-        self.Cust_Details_Table.heading("name", text="Name")
-        self.Cust_Details_Table.heading("mother", text="Mother Name")
-        self.Cust_Details_Table.heading("gender", text="Gender")
-        self.Cust_Details_Table.heading("post", text="PostCode")
-        self.Cust_Details_Table.heading("mobile", text="Mobile")
-        self.Cust_Details_Table.heading("email", text="Email")
-        self.Cust_Details_Table.heading("nationality", text="Nationality")
-        self.Cust_Details_Table.heading("idproof", text="Id Poof")
-        self.Cust_Details_Table.heading("idnumber", text="Id Number")
-        self.Cust_Details_Table.heading("address", text="Address")
+        self.room_Table.heading("contact", text="Contact")
+        self.room_Table.heading("checkin", text="Check-in")
+        self.room_Table.heading("checkout", text="Check-out")
+        self.room_Table.heading("roomtype", text="Room Type")
+        self.room_Table.heading("roomavailable", text="Room No")
+        self.room_Table.heading("meal", text="Meal")
+        self.room_Table.heading("noOfdays", text="NoOfDays")
 
-        self.Cust_Details_Table["show"] = "headings"
+        self.room_Table["show"] = "headings"
 
-        self.Cust_Details_Table.column("ref", width=100)
-        self.Cust_Details_Table.column("name", width=100)
-        self.Cust_Details_Table.column("mother", width=100)
-        self.Cust_Details_Table.column("gender", width=100)
-        self.Cust_Details_Table.column("post", width=100)
-        self.Cust_Details_Table.column("mobile", width=100)
-        self.Cust_Details_Table.column("email", width=100)
-        self.Cust_Details_Table.column("nationality", width=100)
-        self.Cust_Details_Table.column("idproof", width=100)
-        self.Cust_Details_Table.column("idnumber", width=100)
-        self.Cust_Details_Table.column("address", width=100)
+        self.room_Table.column("contact", width=120)
+        self.room_Table.column("checkin", width=120)
+        self.room_Table.column("checkout", width=120)
+        self.room_Table.column("roomtype", width=120)
+        self.room_Table.column("roomavailable", width=120)
+        self.room_Table.column("meal", width=120)
+        self.room_Table.column("noOfdays", width=120)
+        self.room_Table.pack(fill=BOTH, expand=1)
 
-        self.Cust_Details_Table.pack(fill=BOTH, expand=1)
+    # All data fetch
+    def fetch_contact(self):
+        if self.var_contact.get() == "":
+            messagebox.showerror(
+                "Error", "Please enter Contact Number", parent=self.root)
+        else:
+            conn = mysql.connector.connect(
+                host="local", username="root", password="", database="")
+            my_cursor = conn.cursor()
+            query = ("Select Name from customer where Mobile=%s")
+            value = (self.var_contact.get(),)
+            my_cursor.execute(query, value)
+            row = my_cursor.fetchone()
+            if row == None:
+                messagebox.showerror(
+                    "Error", "This Number Not Found", parent=self.root)
+            else:
+                conn.commit()
+                conn.close()
+                showDataframe = Frame(self.root, bd=4, relief=RIDGE, padx=2)
+                showDataframe.place(x=450, y=55, width=300, height=180)
+
+                lblName = Label(showDataframe, text="Name:",
+                                font=("times new roman", 12, "bold"))
+                lblName.place(x=0, y=0)
+
+                lbl = Label(showDataframe, text=row, font=(
+                    "times new roman", 12, "bold"))
+                lbl.place(x=90, y=0)
+
+                # Gender
+
+                conn = mysql.connector.connect(
+                    host="local", username="root", password="", database="")
+                my_cursor = conn.cursor()
+                query = ("Select Gender from customer where Mobile=%s")
+                value = (self.var_contact.get(),)
+                my_cursor.execute(query, value)
+                row = my_cursor.fetchone()
+
+                lblGender = Label(showDataframe, text="Gender:",
+                                  font=("times new roman", 12, "bold"))
+                lblGender.place(x=0, y=30)
+
+                lbl = Label(showDataframe, text=row, font=(
+                    "times new roman", 12, "bold"))
+                lbl.place(x=90, y=30)
+
+                # Email
+                conn = mysql.connector.connect(
+                    host="local", username="root", password="", database="")
+                my_cursor = conn.cursor()
+                query = ("Select Email from customer where Mobile=%s")
+                value = (self.var_contact.get(),)
+                my_cursor.execute(query, value)
+                row = my_cursor.fetchone()
+
+                lblGender = Label(showDataframe, text="Email:",
+                                  font=("times new roman", 12, "bold"))
+                lblGender.place(x=0, y=60)
+
+                lbl = Label(showDataframe, text=row, font=(
+                    "times new roman", 12, "bold"))
+                lbl.place(x=90, y=60)
+
+                # Nationality
+                conn = mysql.connector.connect(
+                    host="local", username="root", password="", database="")
+                my_cursor = conn.cursor()
+                query = ("Select Nationality from customer where Mobile=%s")
+                value = (self.var_contact.get(),)
+                my_cursor.execute(query, value)
+                row = my_cursor.fetchone()
+
+                lblGender = Label(showDataframe, text="Nationality:",
+                                  font=("times new roman", 12, "bold"))
+                lblGender.place(x=0, y=90)
+
+                lbl = Label(showDataframe, text=row, font=(
+                    "times new roman", 12, "bold"))
+                lbl.place(x=90, y=90)
+
+                # Address
+                conn = mysql.connector.connect(
+                    host="local", username="root", password="", database="")
+                my_cursor = conn.cursor()
+                query = ("Select Address from customer where Mobile=%s")
+                value = (self.var_contact.get(),)
+                my_cursor.execute(query, value)
+                row = my_cursor.fetchone()
+
+                lblGender = Label(showDataframe, text="Address:",
+                                  font=("times new roman", 12, "bold"))
+                lblGender.place(x=0, y=120)
+
+                lbl = Label(showDataframe, text=row, font=(
+                    "times new roman", 12, "bold"))
+                lbl.place(x=90, y=120)
 
 
 if __name__ == "__main__":
