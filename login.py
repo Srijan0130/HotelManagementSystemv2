@@ -8,6 +8,7 @@ import datetime
 #import mysql.connector
 from Hotel import HotelManagementSystem
 from Signup import Signup_Window
+import psycopg2
 
 
 def main():
@@ -67,8 +68,28 @@ class Login_Window:
     def login(self):
         if self.txtuser.get() == "" or self.txtpass.get() == "":
             messagebox.showerror("Error", "All fields Required")
-        elif self.txtuser.get() == "srijan" and self.txtpass.get() == "grg":
-            messagebox.showinfo("Success", "Welcom To Hotel Management System")
+        elif len(self.txtuser.get()) > 1 and len(self.txtpass.get()) > 1:
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+
+            cursor = conn.cursor()
+            cursor.execute("select*from REGISTER ")
+            postgreSQL_select_Query = "select * from REGISTER where username = %s"
+            cursor.execute(postgreSQL_select_Query, (self.txtuser.get(),))
+            # cursor.execute(
+            #     "select*from REGISTER where username = %s", self.txtuser.get())
+            rows = cursor.fetchall()
+            new_username = rows[0][0]
+            new_password = rows[0][1]
+            print(rows)
+            print(new_username, new_password)
+            if(new_username == self.txtuser.get() and new_password == self.txtpass.get()):
+                self.new_window = Toplevel(self.root)
+                self.app = HotelManagementSystem(self.new_window)
+
         else:
             messagebox.showerror("Inavlid", "Inavalid Username or Password")
 

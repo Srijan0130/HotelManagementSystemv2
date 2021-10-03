@@ -54,7 +54,7 @@ class Cust_Win:
         lbl_cust_ref.grid(row=0, column=0, sticky=W)
 
         enty_ref = ttk.Entry(labelframeleft, textvariable=self.var_ref, font=(
-            "times new roman", 13, "bold"), width=29, state="readonly")
+            "times new roman", 13, "bold"), width=29, )
         enty_ref.grid(row=0, column=1)
 
         # cust name
@@ -325,10 +325,14 @@ class Cust_Win:
             messagebox.showerror(
                 "Error", "Please enter mobile number", parent=self.root)
         else:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
-            my_cursor = conn.cursor()
-            my_cursor.execute("update customer set Name=%s, Mother=%s, Gender=%s,PostCode=%s,Mobile=%s,Email=%s,Nationality=%s,Idproof=%s,=%s,Idnumber=%s,Address=%s where Ref=%s ", (
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+
+            cursor = conn.cursor()
+            cursor.execute("update customers set customer_name=%s, mother_name=%s,gender=%s,post_code=%s,mobile_number=%s,email=%s,nationality=%s,id_proof=%s,id_number=%s,address=%s where customer_ref=%s ", (
 
                 self.var_cust_name.get(),
                 self.var_mother.get(),
@@ -352,12 +356,16 @@ class Cust_Win:
         delete = messagebox.askyesno(
             "Hotel Management System", "do you want to deletebthis customer", parent=self.root)
         if delete > 0:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
-            my_cursor = conn.cursor()
-            query = "delete from customer where Ref=%s"
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+
+            cursor = conn.cursor()
+            query = "delete from customers where customer_ref=%s"
             value = (self.var_ref.get(),)
-            my_cursor.execute(query, value)
+            cursor.execute(query, value)
         else:
             if not delete:
                 return
@@ -382,12 +390,23 @@ class Cust_Win:
         self.var_ref.set(str(x))
 
     def search(self):
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select * from customer where " +
-                          str(self.search_var.get()) + "LIKE'%"+str(self.txt_search.get()+"%'"))
-        rows = my_cursor.fetchall()
+        conn = psycopg2.connect(host='127.0.0.1',
+                                port=5432,
+                                user='postgres',
+                                password='12345',
+                                database='hotelmanagement')  # To remove slash
+
+        cursor = conn.cursor()
+        rows = None
+        if self.search_var.get() == 'Mobile':
+            postgreSQL_select_Query = "select * from REGISTER where mobile_number = %s"
+        else:
+            postgreSQL_select_Query = "select * from REGISTER where username = %s"
+
+            cursor.execute("select * from customer where " +
+                        str(self.search_var.get()) + "LIKE'%"+str(self.txt_search.get()+"%'"))
+            rows = cursor.fetchall()
+
         if len(rows) != 0:
             self.Cust_Details_Table.delete(
                 *self.Cust_Details_Table.get_children())

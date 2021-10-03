@@ -20,8 +20,8 @@ class Login_Window:
         self.root = root
         self.root.geometry("1550x800+0+0")
 
-        self.bg = ImageTk.PhotImage(file="C:/Users/gurun/Desktop/.png")
-        lbl_bg = Label(self.root, image=self.bg)
+        # self.bg = ImageTk.PhotImage(file="C:/Users/gurun/Desktop/.png")
+        # lbl_bg = Label(self.root, image=self.bg)
 
         frame = Frame(self.root, bg="black")
         frame.place(x=610, y=170, width=90, height=430)

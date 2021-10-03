@@ -6,6 +6,7 @@ from time import strftime
 from datetime import datetime
 #import mysql.connector
 from tkinter import messagebox
+import psycopg2
 
 
 class Details:
@@ -48,7 +49,7 @@ class Details:
         lbl_RoomNo.grid(row=1, column=0, sticky=W, padx=20)
 
         self.var_RoomNo = StringVar()
-        enty_RoomNo = ttk.Entry(labelframeleft, font=(
+        enty_RoomNo = ttk.Entry(labelframeleft, textvariable=self.var_RoomNo, font=(
             "times new roman", 13, "bold"), width=20)
         enty_RoomNo.grid(row=1, column=1, sticky=W)
 
@@ -58,7 +59,7 @@ class Details:
         lbl_RoomType.grid(row=2, column=0, sticky=W, padx=20)
 
         self.var_RoomType = StringVar()
-        enty_RoomType = ttk.Entry(labelframeleft, font=(
+        enty_RoomType = ttk.Entry(labelframeleft, textvariable=self.var_RoomType, font=(
             "times new roman", 13, "bold"), width=20)
         enty_RoomType.grid(row=2, column=1, sticky=W)
 
@@ -116,36 +117,43 @@ class Details:
         # add data
 
     def add_details(self):
+        print(self.var_floor.get())
         if self.var_floor.get() == "" or self.var_RoomType.get() == "":
             messagebox.showerror(
                 "Error", "All fields are required", parent=self.root)
         else:
             try:
-                conn = mysql.connector.connect(
-                    host="local", username="root", password="", database="")
-                my_cursor = conn.cursor()
-                my_cursor.exexute("insert info details value(%s,%s,%s)", (
-                    self.var_floor.get(),
-                    self.var_RoomNo.get(),
-                    self.var_RoomType.get()
+                conn = psycopg2.connect(host='127.0.0.1',
+                                        port=5432,
+                                        user='postgres',
+                                        password='12345',
+                                        database='hotelmanagement')  # To remove slash
 
-
-                ))
+                cursor = conn.cursor()
+                cursor.execute("insert into ROOM_DETAILS ( floor, room_no,room_type) values (%s, %s,%s)",
+                               (self.var_floor.get(),
+                                self.var_RoomNo.get(),
+                                self.var_RoomType.get()))
                 conn.commit()
                 self.fetch_details()
                 conn.close()
-                messagebox.showwinfo("New Room Added Successfully")
+                messagebox.showinfo("New Room Added Successfully")
             except Exception as es:
-                messagebox.showwarning(
-                    "Warning", f"Some thing went wrong:{str(es)}", parent=self.root)
+                print(es)
+                # messagebox.showwarning(
+                #     "Warning", f"Some thing went wrong:{str(es)}", parent=self.root)
 
     # fetch data
     def fetch_details(self):
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select*from details")
-        rows = my_cursor.fetchall()
+        conn = psycopg2.connect(host='127.0.0.1',
+                                port=5432,
+                                user='postgres',
+                                password='12345',
+                                database='hotelmanagement')  # To remove slash
+
+        cursor = conn.cursor()
+        cursor.execute("select*from ROOM_DETAILS")
+        rows = cursor.fetchall()
         if len(rows) != 0:
             self.room_Table.delete(
                 *self.room_Table.get_children())
@@ -172,14 +180,20 @@ class Details:
             messagebox.showerror(
                 "Error", "Please enter mobile number", parent=self.root)
         else:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
-            my_cursor = conn.cursor()
-            my_cursor.execute("update the details set Floor=%s,RoomType=%s where RoomNo=%s", (
+            print(self.var_floor.get(),
+                  self.var_RoomNo.get(),
+                  self.var_RoomType.get())
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+            cursor = conn.cursor()
+            cursor.execute("update room_details set floor=%s,room_type=%s where room_no=%s", (
 
                 self.var_floor.get(),
+                self.var_RoomType.get(),
                 self.var_RoomNo.get(),
-                self.var_RoomType.get()
 
             ))
             conn.commit()
@@ -189,13 +203,18 @@ class Details:
                 "Update", "Room details has been updated success", parent=self.root)
 
     def delete(self):
+
         delete = messagebox.askyesno(
             "Hotel Management System", "do you want to delete this room details", parent=self.root)
         if delete > 0:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+
             my_cursor = conn.cursor()
-            query = "delete from details where RoomNo=%s"
+            query = "delete from room_details where room_no=%s"
             value = (self.var_RoomNo.get(),)
             my_cursor.execute(query, value)
         else:
