@@ -82,10 +82,15 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_RoomType.grid(row=3, column=0, sticky=W)
 
+        conn = mysql.connector.connect(
+            host="local", username="root", password="", database="")
+        my_cursor = conn.cursor()
+        my_cursor.execute("select RoomType from details")
+        ide = my_cursor.fetchall()
+
         combo_RoomType = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomType["value"] = (
-            "Single", "Double", "Luxury", "Sweet", "Deluxe")
+        combo_RoomType["value"] = ide
         combo_RoomType.current(0)
         combo_RoomType.grid(row=3, column=1)
 
@@ -94,25 +99,21 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblRoomAvailable.grid(row=4, column=0, sticky=W)
 
-        #txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
-            #"times new roman", 13, "bold"), width=29)
+        # txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
+        # "times new roman", 13, "bold"), width=29)
         #txtRoomAvailable.grid(row=4, column=1)
 
-        
         conn = mysql.connector.connect(
             host="local", username="root", password="", database="")
         my_cursor = conn.cursor()
-        my_cursor.execute("select*from room")
+        my_cursor.execute("select RoomNo from details")
         rows = my_cursor.fetchall()
 
-        combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
+        combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomavailable, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomNo["value"] = (
-            "Single", "Double", "Luxury", "Sweet", "Deluxe")
+        combo_RoomNo["value"] = rows
         combo_RoomNo.current(0)
-        combo_RoomNo.grid(row=3, column=1)
-
-
+        combo_RoomNo.grid(row=4, column=1)
 
         # Meal
         lblMeal = Label(labelframeleft, text="Meal:", font=(
@@ -511,6 +512,19 @@ class Roombooking:
             self.var_total.set(TT)
 
         elif (self.var_meal.get() == "Lunch" and self.var_roomtype.get() == "Single"):
+            q1 = float(300)
+            q2 = float(700)
+            q3 = float(self.var_noofday.get())
+            q4 = float(q1+q2)
+            q5 = float(q3+q4)
+            Tax = "Rs."+str("%2f" % ((q5)*0.1))
+            ST = "Rs."+str("%2f" % ((q5)))
+            TT = "Rs."+str("%2f" % ((q5+(q5)*0.1)))
+            self.var_paidtax.set(Tax)
+            self.var_actualtotal.set(ST)
+            self.var_total.set(TT)
+
+        elif (self.var_meal.get() == "Breakfast" and self.var_roomtype.get() == "Deluxe"):
             q1 = float(300)
             q2 = float(700)
             q3 = float(self.var_noofday.get())
