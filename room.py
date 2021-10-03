@@ -27,7 +27,7 @@ class Roombooking:
         self.var_total = StringVar()
 
         # title
-        lbl_title = Label(self.root, text="ROOMOOKING DETAILS", font=("times new roman", 18, "bold"), bg="black",
+        lbl_title = Label(self.root, text="ROOMBOOKING DETAILS", font=("times new roman", 18, "bold"), bg="black",
                           fg="gold", bd=4, relief=RIDGE)
         lbl_title.place(x=0, y=0, width=1295, height=50)
 
@@ -94,9 +94,25 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblRoomAvailable.grid(row=4, column=0, sticky=W)
 
-        txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
-            "times new roman", 13, "bold"), width=29)
-        txtRoomAvailable.grid(row=4, column=1)
+        #txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
+            #"times new roman", 13, "bold"), width=29)
+        #txtRoomAvailable.grid(row=4, column=1)
+
+        
+        conn = mysql.connector.connect(
+            host="local", username="root", password="", database="")
+        my_cursor = conn.cursor()
+        my_cursor.execute("select*from room")
+        rows = my_cursor.fetchall()
+
+        combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
+            "times new roman", 13, "bold"), width=27, state="read only")
+        combo_RoomNo["value"] = (
+            "Single", "Double", "Luxury", "Sweet", "Deluxe")
+        combo_RoomNo.current(0)
+        combo_RoomNo.grid(row=3, column=1)
+
+
 
         # Meal
         lblMeal = Label(labelframeleft, text="Meal:", font=(
@@ -198,11 +214,11 @@ class Roombooking:
             "times new roman", 13, "bold"), width=29)
         txtSearch.grid(row=0, column=2, padx=2)
 
-        btnSearch = Button(Table_Frame, text="Search", command=self.search,font=(
+        btnSearch = Button(Table_Frame, text="Search", command=self.search, font=(
             "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
         btnSearch.grid(row=0, column=3, padx=1)
 
-        btnShowAll = Button(Table_Frame, text="Show All",command=self.fetch_details, font=(
+        btnShowAll = Button(Table_Frame, text="Show All", command=self.fetch_details, font=(
             "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
         btnShowAll.grid(row=0, column=4, padx=1)
 
@@ -457,8 +473,8 @@ class Roombooking:
                     "times new roman", 12, "bold"))
                 lbl.place(x=90, y=120)
 
+    # search system
 
-    #search system
     def search(self):
         conn = mysql.connector.connect(
             host="local", username="root", password="", database="")
@@ -473,7 +489,6 @@ class Roombooking:
                 self.room_Table.insert("", END, values=i)
             conn.commit()
         conn.close()
-
 
     def total(self):
         inDate = self.var_checkin.get()
