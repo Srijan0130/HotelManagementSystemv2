@@ -4,6 +4,7 @@ from tkinter import ttk
 import random
 #import mysql.connector
 from tkinter import messagebox
+import psycopg2
 
 
 class Cust_Win:
@@ -248,10 +249,14 @@ class Cust_Win:
                 "Error", "All filds are required", parent=self.root)
         else:
             try:
-                conn = mysql.connector.connect(
-                    host="local", username="root", password="", database="")
-                my_cursor = conn.cursor()
-                my_cursor.exexute("insert info customer value(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,)", (
+                conn = psycopg2.connect(host='127.0.0.1',
+                                        port=5432,
+                                        user='postgres',
+                                        password='12345',
+                                        database='hotelmanagement')  # To remove slash
+
+                cursor = conn.cursor()
+                cursor.execute("insert into CUSTOMERS (customer_ref,customer_name,mother_name,gender,post_code,mobile_number,email,nationality,id_proof,id_number,address) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (
                     self.var_ref.get(),
                     self.var_cust_name.get(),
                     self.var_mother.get(),
@@ -265,19 +270,30 @@ class Cust_Win:
                     self.var_address.get()
                 ))
                 conn.commit()
-                self.fetch_details()
+
+                # my_cursor = conn.cursor()
+                # my_cursor.exexute("insert info customer
+                # conn.commit()
+
                 conn.close()
-                messagebox.showwinfo("Success", "Customer has been added")
+                self.fetch_details()
+                # messagebox.showwinfo("Success", "Customer has been added")
             except Exception as es:
+                print(es)
                 messagebox.showwarning(
                     "Warning", f"Some thing went wrong:{str(es)}", parent=self.root)
 
     def fetch_details(self):
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select*from customer")
-        rows = my_cursor.fetchall()
+        conn = psycopg2.connect(host='127.0.0.1',
+                                port=5432,
+                                user='postgres',
+                                password='12345',
+                                database='hotelmanagement')  # To remove slash
+
+        cursor = conn.cursor()
+        cursor.execute("select*from CUSTOMERS")
+        rows = cursor.fetchall()
+        print(rows)
         if len(rows) != 0:
             self.Cust_Details_Table.delete(
                 *self.Cust_Details_Table.get_children())
@@ -285,6 +301,7 @@ class Cust_Win:
                 self.Cust_Details_Table.insert("", END, values=i)
             conn.commit()
         conn.close()
+        pass
 
     def get_cursor(self, events=""):
         cursor_row = self.Cust_Details_Table.Focus()

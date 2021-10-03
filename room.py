@@ -4,7 +4,7 @@ from tkinter import ttk
 import random
 from time import strftime
 from datetime import datetime
-#import mysql.connector
+
 from tkinter import messagebox
 
 
@@ -82,11 +82,11 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_RoomType.grid(row=3, column=0, sticky=W)
 
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select RoomType from details")
-        ide = my_cursor.fetchall()
+        # conn = mysql.connector.connect(
+        #     host="local", username="root", password="", database="")
+        # my_cursor = conn.cursor()
+        # my_cursor.execute("select RoomType from details")
+        # ide = my_cursor.fetchall()
 
         combo_RoomType = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
@@ -99,21 +99,21 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lblRoomAvailable.grid(row=4, column=0, sticky=W)
 
-        # txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
-        # "times new roman", 13, "bold"), width=29)
-        #txtRoomAvailable.grid(row=4, column=1)
+        txtRoomAvailable = ttk.Entry(labelframeleft, textvariable=self.var_roomavailable, font=(
+            "times new roman", 13, "bold"), width=29)
+        txtRoomAvailable.grid(row=4, column=1)
 
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select RoomNo from details")
-        rows = my_cursor.fetchall()
+        # conn = mysql.connector.connect(
+        #     host="local", username="root", password="", database="")
+        # my_cursor = conn.cursor()
+        # my_cursor.execute("select RoomNo from details")
+        # rows = my_cursor.fetchall()
 
-        combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomavailable, font=(
-            "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomNo["value"] = rows
-        combo_RoomNo.current(0)
-        combo_RoomNo.grid(row=4, column=1)
+        # combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomavailable, font=(
+        #     "times new roman", 13, "bold"), width=27, state="read only")
+        # combo_RoomNo["value"] = rows
+        # combo_RoomNo.current(0)
+        # combo_RoomNo.grid(row=4, column=1)
 
         # Meal
         lblMeal = Label(labelframeleft, text="Meal:", font=(
@@ -268,6 +268,15 @@ class Roombooking:
                 "Error", "All filds are required", parent=self.root)
         else:
             try:
+                conn = psycopg2.connect(host='127.0.0.1',
+                                        port=5432,
+                                        user='postgres',
+                                        password='12345',
+                                        database='hotelmanagement')  # To remove slash
+
+                cursor = conn.cursor()
+                cursor.execute("insert into REGISTER ( username, password) values (%s, %s)",
+                               (self.txtuser.get(), self.txtpass.get()))
                 conn = mysql.connector.connect(
                     host="local", username="root", password="", database="")
                 my_cursor = conn.cursor()

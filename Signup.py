@@ -7,7 +7,8 @@ import time
 import datetime
 #import mysql.connector
 from Hotel import HotelManagementSystem
-from login import Login_Window
+import psycopg2
+
 
 def main():
     win = Tk()
@@ -39,14 +40,15 @@ class Signup_Window:
         get_str.place(x=150, y=55)
 
         # label
-        username = lbl = Label(frame, text="Username", font=(
+
+        username = Label(frame, text="Username", font=(
             "times new roman", 15, "bold"), fg="white", bg="black")
         username.place(x=150, y=100)
 
         self.txtuser = ttk.Entry(frame, font=("times new roman", 15, "bold"))
         self.txtuser.place(x=150, y=130, width=270)
 
-        password = lbl = Label(frame, text="Password", font=(
+        password = Label(frame, text="Password", font=(
             "times new roman", 15, "bold"), fg="white", bg="black")
         password.place(x=150, y=175)
 
@@ -71,16 +73,24 @@ class Signup_Window:
         loginbutton.place(x=150, y=380, width=160)
 
     def login(self):
+        print(self.txtuser.get())
         if self.txtuser.get() == "" or self.txtpass.get() == "":
             messagebox.showerror("Error", "All fields Required")
-        elif self.txtuser.get() == "srijan" and self.txtpass.get() == "grg":
+        elif len(self.txtuser.get()) > 1 and len(self.txtpass.get()) > 1:
+
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+
+            cursor = conn.cursor()
+            cursor.execute("insert into REGISTER ( username, password) values (%s, %s)",
+                           (self.txtuser.get(), self.txtpass.get()))
+            conn.commit()
             messagebox.showinfo("Success", "Welcom To Hotel Management System")
         else:
             messagebox.showerror("Inavlid", "Inavalid Username or Password")
-    
-    def login_details(self):
-        self.new_window = Toplevel(self.root)
-        self.app = Login_Window(self.new_window)
 
 
 if __name__ == "__main__":
