@@ -397,15 +397,14 @@ class Cust_Win:
                                 database='hotelmanagement')  # To remove slash
 
         cursor = conn.cursor()
-        rows = None
+        postgreSQL_select_Query = None
         if self.search_var.get() == 'Mobile':
-            postgreSQL_select_Query = "select * from REGISTER where mobile_number = %s"
+            postgreSQL_select_Query = "select * from customers where mobile_number = %s"
         else:
-            postgreSQL_select_Query = "select * from REGISTER where username = %s"
+            postgreSQL_select_Query = "select * from customers where customer_ref = %s"
 
-            cursor.execute("select * from customer where " +
-                        str(self.search_var.get()) + "LIKE'%"+str(self.txt_search.get()+"%'"))
-            rows = cursor.fetchall()
+        cursor.execute(postgreSQL_select_Query, (self.txt_search.get(),))
+        rows = cursor.fetchall()
 
         if len(rows) != 0:
             self.Cust_Details_Table.delete(

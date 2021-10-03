@@ -4,8 +4,8 @@ from tkinter import ttk
 import random
 from time import strftime
 from datetime import datetime
-#import mysql.connector
 from tkinter import messagebox
+import psycopg2
 
 
 class Roombooking:
@@ -82,15 +82,15 @@ class Roombooking:
             "times new roman", 12, "bold"), padx=2, pady=6)
         lbl_RoomType.grid(row=3, column=0, sticky=W)
 
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select RoomType from details")
-        ide = my_cursor.fetchall()
+        # conn = mysql.connector.connect(
+        #     host="local", username="root", password="", database="")
+        # my_cursor = conn.cursor()
+        # my_cursor.execute("select RoomType from details")
+        # ide = my_cursor.fetchall()
 
         combo_RoomType = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomType["value"] = ide
+        combo_RoomType["value"] = 'Lol'
         combo_RoomType.current(0)
         combo_RoomType.grid(row=3, column=1)
 
@@ -103,15 +103,15 @@ class Roombooking:
         # "times new roman", 13, "bold"), width=29)
         #txtRoomAvailable.grid(row=4, column=1)
 
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
-        my_cursor = conn.cursor()
-        my_cursor.execute("select RoomNo from details")
-        rows = my_cursor.fetchall()
+        # conn = mysql.connector.connect(
+        #     host="local", username="root", password="", database="")
+        # my_cursor = conn.cursor()
+        # my_cursor.execute("select RoomNo from details")
+        # rows = my_cursor.fetchall()
 
         combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomavailable, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomNo["value"] = rows
+        combo_RoomNo["value"] = 'Lol'
         combo_RoomNo.current(0)
         combo_RoomNo.grid(row=4, column=1)
 
@@ -273,37 +273,47 @@ class Roombooking:
                                         user='postgres',
                                         password='12345',
                                         database='hotelmanagement')  # To remove slash
-
                 cursor = conn.cursor()
-                cursor.execute("insert into REGISTER ( username, password) values (%s, %s)",
-                           (self.txtuser.get(), self.txtpass.get()))
-                conn = mysql.connector.connect(
-                    host="local", username="root", password="", database="")
-                my_cursor = conn.cursor()
-                my_cursor.exexute("insert info room value(%s,%s,%s,%s,%s,%s,%s)", (
+                cursor.execute("insert into roombook ( customer_contact, check_in_date,check_out_date,room_type,available_room,meal,no_of_days,paid_tax,sub_total,total_cost) values (%s,%s,%s,%s,%s,%s,%s,%s,%s, %s)", (
+
                     self.var_contact.get(),
                     self.var_checkin.get(),
                     self.var_checkout.get(),
                     self.var_roomtype.get(),
                     self.var_roomavailable.get(),
                     self.var_meal.get(),
-                    self.var_noofday.get()
-
+                    self.var_noofday.get(),
+                    self.var_paidtax.get(),
+                    self.var_actualtotal.get(),
+                    self.var_total.get()
                 ))
+
+                # cursor.execute("insert info room value(%s,%s,%s,%s,%s,%s,%s)", (
+                #     self.var_contact.get(),
+                #     self.var_checkin.get(),
+                #     self.var_checkout.get(),
+                #     self.var_roomtype.get(),
+                #     self.var_roomavailable.get(),
+                #     self.var_meal.get(),
+                #     self.var_noofday.get()
+
                 conn.commit()
                 self.fetch_details()
                 conn.close()
-                messagebox.showwinfo("Success", "Room has been booked")
+                messagebox.showinfo("Success", "Room has been booked")
             except Exception as es:
                 messagebox.showwarning(
                     "Warning", f"Some thing went wrong:{str(es)}", parent=self.root)
 
     # fetch data
     def fetch_details(self):
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
+        conn = psycopg2.connect(host='127.0.0.1',
+                                port=5432,
+                                user='postgres',
+                                password='12345',
+                                database='hotelmanagement')  # To remove slash
         my_cursor = conn.cursor()
-        my_cursor.execute("select*from room")
+        my_cursor.execute("select*from roombook")
         rows = my_cursor.fetchall()
         if len(rows) != 0:
             self.room_Table.delete(
@@ -334,10 +344,13 @@ class Roombooking:
             messagebox.showerror(
                 "Error", "Please enter mobile number", parent=self.root)
         else:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
-            my_cursor = conn.cursor()
-            my_cursor.execute("update room set check_in=%s, check_out=%s, roomType=%s,roomavailable=%s,meal=%s,noOfdays=%s where Contact=%s ", (
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+            cursor = conn.cursor()
+            cursor.execute("update roombook set check_in_date=%s, check_out_date=%s, room_type=%s,available_room=%s,meal=%s,no_of_days=%s,paid_tax=%s,sub_total=%s,total_cost=%s where customer_contact=%s ", (
 
                 self.var_checkin.get(),
                 self.var_checkout.get(),
@@ -345,6 +358,9 @@ class Roombooking:
                 self.var_roomavailable.get(),
                 self.var_meal.get(),
                 self.var_noofday.get(),
+                self.var_paidtax.get(),
+                self.var_actualtotal.get(),
+                self.var_total.get(),
                 self.var_contact.get()
 
             ))
@@ -356,14 +372,17 @@ class Roombooking:
 
     def delete(self):
         delete = messagebox.askyesno(
-            "Hotel Management System", "do you want to deletebthis customer", parent=self.root)
+            "Hotel Management System", "do you want to delete this customer", parent=self.root)
         if delete > 0:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
-            my_cursor = conn.cursor()
-            query = "delete from room where Contact=%s"
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
+            cursor = conn.cursor()
+            query = "delete from roombook where customer_contact=%s"
             value = (self.var_contact.get(),)
-            my_cursor.execute(query, value)
+            cursor.execute(query, value)
         else:
             if not delete:
                 return
@@ -390,8 +409,11 @@ class Roombooking:
             messagebox.showerror(
                 "Error", "Please enter Contact Number", parent=self.root)
         else:
-            conn = mysql.connector.connect(
-                host="local", username="root", password="", database="")
+            conn = psycopg2.connect(host='127.0.0.1',
+                                    port=5432,
+                                    user='postgres',
+                                    password='12345',
+                                    database='hotelmanagement')  # To remove slash
             my_cursor = conn.cursor()
             query = ("Select Name from customer where Mobile=%s")
             value = (self.var_contact.get(),)
@@ -486,11 +508,17 @@ class Roombooking:
     # search system
 
     def search(self):
-        conn = mysql.connector.connect(
-            host="local", username="root", password="", database="")
+        conn = psycopg2.connect(host='127.0.0.1',
+                                port=5432,
+                                user='postgres',
+                                password='12345',
+                                database='hotelmanagement')  # To remove slash
         my_cursor = conn.cursor()
-        my_cursor.execute("select * from customer where " +
-                          str(self.search_var.get()) + "LIKE'%"+str(self.txt_search.get()+"%'"))
+        if self.search_var.get() == 'Contact':
+            postgreSQL_select_Query = "select * from roombook where customer_contact = %s"
+        else:
+            postgreSQL_select_Query = "select * from roombook where available_room = %s"
+        my_cursor.execute(postgreSQL_select_Query, (self.txt_search.get(),))
         rows = my_cursor.fetchall()
         if len(rows) != 0:
             self.room_Table.delete(
