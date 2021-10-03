@@ -1,8 +1,9 @@
 from tkinter import *
-#from PIL import Image,ImageTk
+from PIL import Image, ImageTk
 from customer import Cust_Win
 from room import Roombooking
 from details import Details
+import os
 
 
 class HotelManagementSystem:
@@ -13,20 +14,22 @@ class HotelManagementSystem:
 
         # 1st img
 
-        # img1= Image.open("C:/Users/gurun/Desktop/.png)
-        #img1= img1.resize((1550,140),Image.ANTIALIAS)
-        #self.photoimg1= ImageTk.PhotoImage(img1)
+        img1 = Image.open(
+            "C:/Users/gurun/Desktop/CollegeProject/image/topimg.jpg")
+        img1 = img1.resize((1550, 280), Image.ANTIALIAS)
+        self.photoimg1 = ImageTk.PhotoImage(img1)
 
-        #lblimg= Label(self.root,image=self.photoimg1, bd=4,relief=RIDGE)
-        #lblimg.place(x=0,y=0, width=1500, height=140)
+        lblimg = Label(self.root, image=self.photoimg1, bd=4, relief=RIDGE)
+        lblimg.place(x=0, y=0, width=1550, height=140)
 
         # logo
-        # img2= Image.open("C:/Users/gurun/Desktop/.png)
-        #img2= img2.resize((1550,140),Image.ANTIALIAS)
-        #self.photoimg1= ImageTk.PhotoImage(img1)
+        img2 = Image.open(
+            "C:/Users/gurun/Desktop/CollegeProject/image/logo.jpg")
+        img2 = img2.resize((460, 280), Image.ANTIALIAS)
+        self.photoimg2 = ImageTk.PhotoImage(img2)
 
-        #lblimg= Label(self.root,image=self.photoimg1, bd=4,relief=RIDGE)
-        #lblimg.place(x=0,y=0, width=230, height=140)
+        lblimg = Label(self.root, image=self.photoimg2, bd=4, relief=RIDGE)
+        lblimg.place(x=0, y=0, width=230, height=140)
 
         # title
         lbl_title = Label(self.root, text="HOTEL MANAGEMENT SYSTEM", font=("times new roman", 40, "bold"), bg="black",
@@ -68,28 +71,31 @@ class HotelManagementSystem:
 
         # right side image
 
-        # img3= Image.open("C:/Users/gurun/Desktop/.png)
-        # img3= img3.resize((1310,590),Image.ANTIALIAS)
-        # self.photoimg3= ImageTk.PhotoImage(img3)
+        img3 = Image.open(
+            "C:/Users/gurun/Desktop/CollegeProject/image/hotel_front.jpg")
+        img3 = img3.resize((1310, 590), Image.ANTIALIAS)
+        self.photoimg3 = ImageTk.PhotoImage(img3)
 
-        # lblimg= Label(main_frame,image=self.photoimg3, bd=4,relief=RIDGE)
-        # lblimg.place(x=225,y=0, width=1310, height=590)
+        lblimg = Label(main_frame, image=self.photoimg3, bd=4, relief=RIDGE)
+        lblimg.place(x=225, y=0, width=1310, height=590)
 
         # down image
 
-        # img4= Image.open("C:/Users/gurun/Desktop/.png)
-        # img4= img4.resize((230,210),Image.ANTIALIAS)
-        # self.photoimg4= ImageTk.PhotoImage(img4)
+        img4 = Image.open(
+            "C:/Users/gurun/Desktop/CollegeProject/image/food.jpg")
+        img4 = img4.resize((230, 210), Image.ANTIALIAS)
+        self.photoimg4 = ImageTk.PhotoImage(img4)
 
-        # lblimg= Label(main_frame,image=self.photoimg4, bd=4,relief=RIDGE)
-        # lblimg.place(x=0,y=225, width=230, height=210)
+        lblimg = Label(main_frame, image=self.photoimg4, bd=4, relief=RIDGE)
+        lblimg.place(x=0, y=225, width=230, height=210)
 
-        # img5= Image.open("C:/Users/gurun/Desktop/.png)
-        # img5= img2.resize((230,190),Image.ANTIALIAS)
-        # self.photoimg5= ImageTk.PhotoImage(img5)
+        img5 = Image.open(
+            "C:/Users/gurun/Desktop/CollegeProject/image/drink2.jpg")
+        img5 = img5.resize((230, 190), Image.ANTIALIAS)
+        self.photoimg5 = ImageTk.PhotoImage(img5)
 
-        # lblimg= Label(main_frame,image=self.photoimg5, bd=4,relief=RIDGE)
-        # lblimg.place(x=225,y=420, width=230, height=190)
+        lblimg = Label(main_frame, image=self.photoimg5, bd=4, relief=RIDGE)
+        lblimg.place(x=0, y=420, width=230, height=190)
 
     def cust_details(self):
         self.new_window = Toplevel(self.root)
