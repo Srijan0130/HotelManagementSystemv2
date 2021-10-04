@@ -30,8 +30,8 @@ class Cust_Win:
         self.var_address = StringVar()
 
         # title
-        lbl_title = Label(self.root, text="ADD CUSTOMER DETAILS", font=("times new roman", 18, "bold"), bg="black",
-                          fg="gold", bd=4, relief=RIDGE)
+        lbl_title = Label(self.root, text="ADD CUSTOMER DETAILS", font=("times new roman", 18, "bold"), bg="dark green",
+                          fg="white", bd=4, relief=RIDGE)
         lbl_title.place(x=0, y=0, width=1295, height=50)
 
         # logo
@@ -152,19 +152,19 @@ class Cust_Win:
         btn_frame.place(x=0, y=400, width=412, height=40)
 
         btnAdd = Button(btn_frame, text="ADD", command=self.add_details, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnAdd.grid(row=0, column=0, padx=1)
 
         btnUpdate = Button(btn_frame, text="UPDATE", command=self.update, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnUpdate.grid(row=0, column=1, padx=1)
 
         btnDelete = Button(btn_frame, text="DELETE", command=self.delete, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnDelete.grid(row=0, column=2, padx=1)
 
         btnReset = Button(btn_frame, text="RESET", command=self.reset, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnReset.grid(row=0, column=3, padx=1)
 
         # table frame search system
@@ -190,11 +190,11 @@ class Cust_Win:
         txtSearch.grid(row=0, column=2, padx=2)
 
         btnSearch = Button(Table_Frame, text="Search", command=self.search, font=(
-            "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 11, "bold"), bg="dark green", fg="white", width=10)
         btnSearch.grid(row=0, column=3, padx=1)
 
         btnShowAll = Button(Table_Frame, text="Show All", command=self.fetch_details, font=(
-            "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 11, "bold"), bg="dark green", fg="white", width=10)
         btnShowAll.grid(row=0, column=4, padx=1)
 
         # show data table

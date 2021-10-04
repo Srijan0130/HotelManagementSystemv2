@@ -26,30 +26,30 @@ class Login_Window:
         #     "C:/Users/gurun/Desktop/CollegeProject/image/topimg.jpg")
         # lbl_bg = Label(self.root, image=self.bg)
 
-        frame = Frame(self.root, bg="black")
+        frame = Frame(self.root, bg="dark green")
         frame.place(x=500, y=170, width=600, height=430)
 
         # img1= Image.open("C:/Users/gurun/Desktop/.png)
         #img1= img1.resize((90,90),Image.ANTIALIAS)
         #self.photoimg1= ImageTk.PhotoImage(img1)
 
-        #lblimg1= Label(image=self.photoimg1, bg="black",borderwidth=0)
+        #lblimg1= Label(image=self.photoimg1, bg="dark green",borderwidth=0)
         #lblimg1.place(x=730,y=170, width=90, height=90)
 
         get_str = Label(frame, text="Get Started", font=(
-            "times new roman", 20, "bold"), fg="white", bg="black")
+            "times new roman", 20, "bold"), fg="white", bg="dark green")
         get_str.place(x=150, y=100)
 
         # label
         username = lbl = Label(frame, text="Username", font=(
-            "times new roman", 15, "bold"), fg="white", bg="black")
+            "times new roman", 15, "bold"), fg="white", bg="dark green")
         username.place(x=150, y=155)
 
         self.txtuser = ttk.Entry(frame, font=("times new roman", 15, "bold"))
         self.txtuser.place(x=150, y=180, width=270)
 
         password = lbl = Label(frame, text="Password", font=(
-            "times new roman", 15, "bold"), fg="white", bg="black")
+            "times new roman", 15, "bold"), fg="white", bg="dark green")
         password.place(x=150, y=225)
 
         self.txtpass = ttk.Entry(frame, font=("times new roman", 15, "bold"))
@@ -57,12 +57,12 @@ class Login_Window:
 
         # Login Buttton
         loginbutton = Button(frame, command=self.login, text="Login", font=("times new roman", 15, "bold"),
-                             bd=3, relief=RIDGE, fg="white", bg="red", activeforeground="white")
+                             bd=3, relief=RIDGE, fg="white", bg="black", activeforeground="white")
         loginbutton.place(x=150, y=300, width=120, height=35)
 
         # Register Buttton
         loginbutton = Button(frame, text="New user register", command=self.signup_details, font=("times new roman", 15, "bold"),
-                             borderwidth=0, fg="white", bg="black", activeforeground="white", activebackground="red")
+                             borderwidth=0, fg="white", bg="dark green", activeforeground="white", activebackground="black")
         loginbutton.place(x=150, y=350, width=160)
 
     def login(self):

@@ -27,8 +27,8 @@ class Roombooking:
         self.var_total = StringVar()
 
         # title
-        lbl_title = Label(self.root, text="ROOMBOOKING DETAILS", font=("times new roman", 18, "bold"), bg="black",
-                          fg="gold", bd=4, relief=RIDGE)
+        lbl_title = Label(self.root, text="ROOMBOOKING DETAILS", font=("times new roman", 18, "bold"), bg="dark green",
+                          fg="white", bd=4, relief=RIDGE)
         lbl_title.place(x=0, y=0, width=1295, height=50)
 
         # logo
@@ -51,13 +51,13 @@ class Roombooking:
         lbl_cust_contact.grid(row=0, column=0, sticky=W)
 
         enty_contact = ttk.Entry(labelframeleft, textvariable=self.var_contact, font=(
-            "times new roman", 13, "bold"), width=20)
+            "times new roman", 13, "bold"), width=29)
         enty_contact.grid(row=0, column=1, sticky=W)
 
         # Fetch data button
-        btnFetchData = Button(labelframeleft, text="Fetch Data", command=self.fetch_contact, font=(
-            "times new roman", 8, "bold"), bg="black", fg="gold", width=8)
-        btnFetchData.place(x=347, y=4)
+        #btnFetchData = Button(labelframeleft, text="Fetch Data", command=self.fetch_contact, font=(
+            #"times new roman", 8, "bold"), bg="dark green", fg="white", width=8)
+        #btnFetchData.place(x=347, y=4)
 
         # Check_in Date
         check_in_date = Label(labelframeleft, text="Check_in Date:", font=(
@@ -162,7 +162,7 @@ class Roombooking:
 
         # Bill Button
         btnBill = Button(labelframeleft, text="BILL", command=self.total, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnBill.grid(row=10, column=0, padx=1, sticky=W)
 
         # -----------Buttons--------------
@@ -170,19 +170,19 @@ class Roombooking:
         btn_frame.place(x=0, y=400, width=412, height=40)
 
         btnAdd = Button(btn_frame, text="ADD", command=self.add_details, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnAdd.grid(row=0, column=0, padx=1)
 
         btnUpdate = Button(btn_frame, text="UPDATE", command=self.update, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnUpdate.grid(row=0, column=1, padx=1)
 
         btnDelete = Button(btn_frame, text="DELETE", command=self.delete, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnDelete.grid(row=0, column=2, padx=1)
 
         btnReset = Button(btn_frame, text="RESET", command=self.reset, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnReset.grid(row=0, column=3, padx=1)
 
         # Rightside image
@@ -216,11 +216,11 @@ class Roombooking:
         txtSearch.grid(row=0, column=2, padx=2)
 
         btnSearch = Button(Table_Frame, text="Search", command=self.search, font=(
-            "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 11, "bold"), bg="dark green", fg="white", width=10)
         btnSearch.grid(row=0, column=3, padx=1)
 
         btnShowAll = Button(Table_Frame, text="Show All", command=self.fetch_details, font=(
-            "times new roman", 11, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 11, "bold"), bg="dark green", fg="white", width=10)
         btnShowAll.grid(row=0, column=4, padx=1)
 
         # show data table

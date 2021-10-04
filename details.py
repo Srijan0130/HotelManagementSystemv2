@@ -16,8 +16,8 @@ class Details:
         self.root.geometry("1295x550+230+220")
 
         # title
-        lbl_title = Label(self.root, text="DETAILS", font=("times new roman", 18, "bold"), bg="black",
-                          fg="gold", bd=4, relief=RIDGE)
+        lbl_title = Label(self.root, text="DETAILS", font=("times new roman", 18, "bold"), bg="dark green",
+                          fg="white", bd=4, relief=RIDGE)
         lbl_title.place(x=0, y=0, width=1295, height=50)
 
         # logo
@@ -68,19 +68,19 @@ class Details:
         btn_frame.place(x=0, y=200, width=412, height=40)
 
         btnAdd = Button(btn_frame, text="ADD", command=self.add_details, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnAdd.grid(row=0, column=0, padx=1)
 
         btnUpdate = Button(btn_frame, text="UPDATE", command=self.update, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnUpdate.grid(row=0, column=1, padx=1)
 
         btnDelete = Button(btn_frame, text="DELETE", command=self.delete, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnDelete.grid(row=0, column=2, padx=1)
 
         btnReset = Button(btn_frame, text="RESET", command=self.reset, font=(
-            "times new roman", 12, "bold"), bg="black", fg="gold", width=10)
+            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
         btnReset.grid(row=0, column=3, padx=1)
 
         # table frame search system
