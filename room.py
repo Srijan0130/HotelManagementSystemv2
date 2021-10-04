@@ -90,7 +90,7 @@ class Roombooking:
 
         combo_RoomType = ttk.Combobox(labelframeleft, textvariable=self.var_roomtype, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomType["value"] = 'Lol'
+        combo_RoomType["value"] = ("SINGLE","DOUBLE","LUXURY","DELUXE","PLATINUM","SWEET")
         combo_RoomType.current(0)
         combo_RoomType.grid(row=3, column=1)
 
@@ -111,7 +111,7 @@ class Roombooking:
 
         combo_RoomNo = ttk.Combobox(labelframeleft, textvariable=self.var_roomavailable, font=(
             "times new roman", 13, "bold"), width=27, state="read only")
-        combo_RoomNo["value"] = 'Lol'
+        combo_RoomNo["value"] = ("B45","C90","F34","G56")
         combo_RoomNo.current(0)
         combo_RoomNo.grid(row=4, column=1)
 
