@@ -161,9 +161,9 @@ class Roombooking:
         txtTC.grid(row=9, column=1)
 
         # Bill Button
-        btnBill = Button(labelframeleft, text="BILL", command=self.total, font=(
-            "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
-        btnBill.grid(row=10, column=0, padx=1, sticky=W)
+        # btnBill = Button(labelframeleft, text="BILL", command=self.total, font=(
+        #     "times new roman", 12, "bold"), bg="dark green", fg="white", width=10)
+        # btnBill.grid(row=10, column=0, padx=1, sticky=W)
 
         # -----------Buttons--------------
         btn_frame = Frame(labelframeleft, bd=2, relief=RIDGE)
